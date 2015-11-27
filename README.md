@@ -63,6 +63,46 @@ A lightweight library for animations in JavaScript. The library provides methods
   .complete(onComplete);
 ```
 
+## Valid arguments for `.start`
+
+Start can take a list of `Nodes` as a coma separated arguments or a `function`
+
+Node List
+
+```javascript
+  var nodeA    = document.querySelector('#nodeA');
+  var settings = {
+    start      : {
+      opacity : 0
+    },
+    end : {
+      opacity : 1
+    }
+  };
+  transition(settings).start(nodeA);
+```
+
+Using a function
+
+```javascript
+  var nodeA    = document.querySelector('#nodeA');
+  var settings = {
+    start      : {
+      opacity : 0
+    },
+    end : {
+      opacity : 1
+    }
+  };
+  transition(settings).start(function (trasformedStart, progress) {
+    // Do stuff
+  });
+```
+
+`transformedStart` is an object with the transformed values. In this case it would return `{ opacity : value }`
+
+`progress` is a float between 0 and 100
+
 ## Supported settings for animation
 
 #### `settings.iteration`
