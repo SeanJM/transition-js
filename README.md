@@ -65,7 +65,7 @@ A lightweight library for animations in JavaScript. The library provides methods
 
 ## Valid arguments for `.start`
 
-Start can take a list of `Nodes` as a coma separated arguments or a `function`
+Start can take a list of `Nodes` as coma separated arguments or a `function`
 
 Node List
 
@@ -85,23 +85,22 @@ Node List
 Using a function
 
 ```javascript
-  var nodeA    = document.querySelector('#nodeA');
   var settings = {
     start      : {
-      opacity : 0
+      scrollY : window.scrollY
     },
     end : {
-      opacity : 1
+      scrollY : window.scrollY + 300
     }
   };
-  transition(settings).start(function (trasformedStart, progress) {
-    // Do stuff
+  transition(settings).start(function (transformed, progress) {
+    window.scroll(0, transformed.scrollY);
   });
 ```
 
-#### `transformedStart`
+#### `transformed`
 
-`transformedStart` is an object with the transformed values. In this case it would return `{ opacity : value }`
+`transformed` is an object with the transformed values. In this case it would return `{ opacity : value }`
 
 #### `progress`
 
