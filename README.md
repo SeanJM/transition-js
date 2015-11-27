@@ -100,7 +100,7 @@ Using a function
 
 #### `transformed`
 
-`transformed` is an object with the transformed values. In this case it would return `{ opacity : value }`
+`transformed` is an object with the transformed values. In this case it would return `{ scrollY : value }`
 
 #### `progress`
 
