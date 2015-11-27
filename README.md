@@ -99,7 +99,11 @@ Using a function
   });
 ```
 
+#### `transformedStart`
+
 `transformedStart` is an object with the transformed values. In this case it would return `{ opacity : value }`
+
+#### `progress`
 
 `progress` is a float between 0 and 100
 
