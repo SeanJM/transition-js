@@ -5,6 +5,8 @@ var js     = {};
   var lib = {
     main : [
       'src/transition.js',
+      'src/transition.delta.js',
+      'src/transition.ease.js',
     ]
   };
   function get(files) {
@@ -41,7 +43,7 @@ module.exports = function(grunt) {
       },
       transition : {
         files: {
-          'transition.min.js' : 'src/transition.js',
+          'transition.min.js' : js.main,
         }
       }
     },

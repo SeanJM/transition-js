@@ -124,6 +124,16 @@ Available delta's are:
 - `transition.delta.elastic`
 - `transition.delta.back`
 
+#### `settungs.ease`
+
+Default value for `settings.ease` is `transition.ease.inOut`
+
+Available easings are:
+
+- `transition.ease.in`
+- `transition.ease.out`
+- `transition.ease.inOut`
+
 #### `settings.duration`
 
 Default value for `settings.duration` is `600` milliseconds.
