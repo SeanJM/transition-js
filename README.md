@@ -9,7 +9,7 @@ A lightweight library for animations in JavaScript. The library provides methods
   var nodeA    = document.querySelector('#nodeA');
   var nodeB    = document.querySelector('#nodeB');
   var settings = {
-    start      : {
+    start : {
       opacity : 0
     },
     end : {
@@ -25,7 +25,7 @@ A lightweight library for animations in JavaScript. The library provides methods
   var nodeA    = document.querySelector('#nodeA');
   var nodeB    = document.querySelector('#nodeB');
   var settings = {
-    start      : {
+    start : {
       opacity : 0
     },
     end : {
@@ -44,7 +44,7 @@ A lightweight library for animations in JavaScript. The library provides methods
   var nodeA    = document.querySelector('#nodeA');
   var nodeB    = document.querySelector('#nodeB');
   var settings = {
-    start      : {
+    start : {
       opacity : 0
     },
     end : {
@@ -72,7 +72,7 @@ Node List
 ```javascript
   var nodeA    = document.querySelector('#nodeA');
   var settings = {
-    start      : {
+    start : {
       opacity : 0
     },
     end : {
@@ -86,7 +86,7 @@ Using a function
 
 ```javascript
   var settings = {
-    start      : {
+    start : {
       scrollY : window.scrollY
     },
     end : {
