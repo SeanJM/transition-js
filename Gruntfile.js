@@ -21,16 +21,6 @@ var js     = {};
   ]);
 })();
 
-function shortFile(dir, fileList) {
-  var obj = {};
-  for (var k in fileList) {
-    for (var i = 0, len = fileList[k].length; i < len; i++) {
-      obj[dir + fileList[k][i]] = k + fileList[k][i];
-    }
-  }
-  return obj;
-}
-
 module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
@@ -44,6 +34,18 @@ module.exports = function(grunt) {
       transition : {
         files: {
           'transition.min.js' : js.main,
+        }
+      }
+    },
+    concat : {
+      options : {
+        banner    : '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
+        sourceMap : false,
+        mangle    : false
+      },
+      transition : {
+        files: {
+          'transition.js' : js.main,
         }
       }
     },
@@ -66,6 +68,7 @@ module.exports = function(grunt) {
   // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-concat');
   // Default task(s).
-  grunt.registerTask('default', ['uglify', 'watch']);
+  grunt.registerTask('default', ['uglify', 'concat', 'watch']);
 };

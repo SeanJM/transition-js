@@ -1,3 +1,4 @@
+/*! transition 2016-01-27 */
 /**
 * A transition function which can handle a queue of animations
 * Copyright (C) 2015 MooTools & Sean J. MacIsaac
@@ -135,20 +136,14 @@ function transition(parameters) {
     return self;
   }
 
-  queue.setAnimationProperties = function ($properties) {
-    if (typeof $properties.delta !== 'function') {
-      throw 'transition.js: The \'delta\' property must be a function.';
-    }
-    if (typeof $properties.ease !== 'function') {
-      throw 'transition.js: The \'ease\' property must be a function.';
-    }
+  queue.setAnimationProperties = function (_properties_) {
     properties = assign({
       duration   : 600,
       delay      : 0,
       delta      : transition.delta.quadratic,
       ease       : transition.ease.inOut,
       iterations : 1
-    }, $properties);
+    }, _properties_);
   };
 
   queue.startAnimation = function () {
@@ -171,3 +166,45 @@ function transition(parameters) {
 
   return init(parameters);
 }
+
+transition.delta = {
+  linear : function (p) {
+    return p;
+  },
+  quadratic : function (p) {
+    return Math.pow(p, 5);
+  },
+  bounce : function (p) {
+    // The code is taken from MooTools.FX.Transitions.
+    for (var a = 0, b = 1; 1; a += b, b /= 2) {
+      if (p >= (7 - 4 * a) / 11) {
+        return -Math.pow((11 - 6 * a - 11 * p) / 4, 2) + Math.pow(b, 2);
+      }
+    }
+  },
+  elastic : function (p) {
+    // This code was adapted from MooTools.FX.Transitions.
+    return Math.pow(2, 15 * --p) * Math.cos(15 * p * Math.PI * 1 / 3);
+  },
+  back : function (p) {
+    // This code was adapted from MooTools.FX.Transitions.
+    var x = 10.618;
+    return Math.pow(p, 2) * ((x + 1) * p - x);
+  }
+};
+
+transition.ease = {
+  in : function (deltaFn, progress) {
+    return deltaFn(progress);
+  },
+  out : function (deltaFn, progress) {
+    return 1 - deltaFn(1 - progress);
+  },
+  inOut : function (deltaFn, progress) {
+    if (progress < 0.5) {
+      return deltaFn(2 * progress) / 2;
+    } else {
+      return (2 - deltaFn(2 * (1 - progress))) / 2;
+    }
+  }
+};
