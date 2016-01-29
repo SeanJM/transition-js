@@ -136,10 +136,10 @@ function transition(parameters) {
   }
 
   queue.setAnimationProperties = function ($properties) {
-    if (typeof $properties.delta !== 'function') {
+    if (typeof $properties.delta === 'string' || typeof $properties.delta === 'number') {
       throw 'transition.js: The \'delta\' property must be a function.';
     }
-    if (typeof $properties.ease !== 'function') {
+    if (typeof $properties.ease === 'string' || typeof $properties.ease === 'number' ) {
       throw 'transition.js: The \'ease\' property must be a function.';
     }
     properties = assign({

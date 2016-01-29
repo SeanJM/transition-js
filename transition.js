@@ -1,4 +1,4 @@
-/*! transition 2016-01-27 */
+/*! transition 2016-01-29 */
 /**
 * A transition function which can handle a queue of animations
 * Copyright (C) 2015 MooTools & Sean J. MacIsaac
@@ -136,14 +136,20 @@ function transition(parameters) {
     return self;
   }
 
-  queue.setAnimationProperties = function (_properties_) {
+  queue.setAnimationProperties = function ($properties) {
+    if (typeof $properties.delta === 'string' || typeof $properties.delta === 'number') {
+      throw 'transition.js: The \'delta\' property must be a function.';
+    }
+    if (typeof $properties.ease === 'string' || typeof $properties.ease === 'number' ) {
+      throw 'transition.js: The \'ease\' property must be a function.';
+    }
     properties = assign({
       duration   : 600,
       delay      : 0,
       delta      : transition.delta.quadratic,
       ease       : transition.ease.inOut,
       iterations : 1
-    }, _properties_);
+    }, $properties);
   };
 
   queue.startAnimation = function () {
