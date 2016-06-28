@@ -52,6 +52,5 @@ Transition.delta = {
   linear : deltaLinear,
   quadratic : deltaQuadratic,
   bounce : deltaBounce,
-  elastic : deltaElastic,
   back : deltaBack
 };

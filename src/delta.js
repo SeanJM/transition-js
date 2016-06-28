@@ -13,18 +13,6 @@ function deltaBounce(p) {
   }
 }
 
-function deltaElastic(p) {
-  // This code was adapted from MooTools.FX.Transitions.
-  return Math.pow(2, 15 * --p) * Math.cos(20 * p * Math.PI * 1 / 3);
-}
-
-deltaElastic.curry = function (a) {
-  a = a * 5;
-  return function (p) {
-    return Math.pow(2, 15 * --p) * Math.cos(a * p * Math.PI * 1 / 3);
-  };
-};
-
 function deltaLinear(p) {
   return p;
 }

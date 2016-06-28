@@ -1,6 +1,6 @@
 var FILTER_DELTA = {
   back : deltaBack,
-  elastic : deltaElastic,
+  bounce : deltaBounce,
   linear : deltaLinear,
   quadratic : deltaQuadratic,
 };
