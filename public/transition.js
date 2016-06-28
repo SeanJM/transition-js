@@ -1,7 +1,7 @@
 (function () {
 var FILTER_DELTA = {
   back : deltaBack,
-  elastic : deltaElastic,
+  bounce : deltaBounce,
   linear : deltaLinear,
   quadratic : deltaQuadratic,
 };
@@ -25,6 +25,13 @@ Animate.prototype.then = function (callback) {
   this.method.then.push(callback);
 };
 
+Animate.prototype.elastify = function (p) {
+  var a = this.options.elastic * 5;
+  return this.options.elastic !== 0
+    ? Math.pow(2, 15 * --p) * Math.cos(a * p * Math.PI * 1 / 3)
+    : p;
+};
+
 Animate.prototype.start = function (time) {
   var self = this;
   var start = this.options.start;
@@ -37,7 +44,7 @@ Animate.prototype.start = function (time) {
 
     // Set the frame
     forEach(self.options.start, function (value, key) {
-      var delta = self.options.ease(self.options.delta, progress);
+      var delta = self.elastify(self.options.ease(self.options.delta, progress));
       var step = round(delta, 2);
       result[key] = start[key] + step * (end[key] - start[key]);
     });
@@ -74,18 +81,6 @@ function deltaBounce(p) {
     }
   }
 }
-
-function deltaElastic(p) {
-  // This code was adapted from MooTools.FX.Transitions.
-  return Math.pow(2, 15 * --p) * Math.cos(20 * p * Math.PI * 1 / 3);
-}
-
-deltaElastic.curry = function (a) {
-  a = a * 5;
-  return function (p) {
-    return Math.pow(2, 15 * --p) * Math.cos(a * p * Math.PI * 1 / 3);
-  };
-};
 
 function deltaLinear(p) {
   return p;
@@ -139,7 +134,7 @@ function easeOut(transition, pos) {
     }
   }
 
-  function flush(self) {
+  function next(self) {
     var queue = self.queue;
     var result;
 
@@ -150,11 +145,11 @@ function easeOut(transition, pos) {
         result.then(function () {
           waiting = false;
           queue.shift();
-          flush(self);
+          next(self);
         });
       } else {
         queue.shift();
-        flush(self);
+        next(self);
       }
     }
 
@@ -164,11 +159,12 @@ function easeOut(transition, pos) {
     self.queue.push(opt);
     self.history.push(opt);
     checkHistory(self.history);
-    flush(self);
+    next(self);
   }
 
   window.enqueue = enqueue;
 }());
+
 window.transition = function transition(opt) {
   return new Transition(opt);
 };
@@ -182,15 +178,14 @@ function method_transition(options) {
     start : options.start,
     end : options.end,
 
-    delta : FILTER_DELTA[
-      options.delta
-      || 'quadratic'
-    ],
+    delta : FILTER_DELTA[options.delta]
+      || FILTER_DELTA.quadratic,
 
-    ease : FILTER_EASE[
-      options.ease
-      || 'in-out'
-    ],
+    ease : FILTER_EASE[options.ease]
+      || FILTER_EASE['in-out'],
+
+    elastic : options.elastic
+      || 0,
 
     iterations : options.iterations
       || 1,
@@ -262,7 +257,6 @@ Transition.delta = {
   linear : deltaLinear,
   quadratic : deltaQuadratic,
   bounce : deltaBounce,
-  elastic : deltaElastic,
   back : deltaBack
 };
 
@@ -278,6 +272,9 @@ function then(self) {
   self.method.catch = [];
   whileType(self.method.then);
 }
+
+// A function to loop through an array of functions, executing each function
+// then removing it from the array
 
 function whileType(method) {
   var n = arguments.length;
