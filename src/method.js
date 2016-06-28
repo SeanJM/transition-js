@@ -7,15 +7,14 @@ function method_transition(options) {
     start : options.start,
     end : options.end,
 
-    delta : FILTER_DELTA[
-      options.delta
-      || 'quadratic'
-    ],
+    delta : FILTER_DELTA[options.delta]
+      || FILTER_DELTA.quadratic,
 
-    ease : FILTER_EASE[
-      options.ease
-      || 'in-out'
-    ],
+    ease : FILTER_EASE[options.ease]
+      || FILTER_EASE['in-out'],
+
+    elastic : options.elastic
+      || 0,
 
     iterations : options.iterations
       || 1,
