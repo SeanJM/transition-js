@@ -19,18 +19,21 @@ Animate.prototype.elastify = function (p) {
     : p;
 };
 
-Animate.prototype.start = function (time) {
+Animate.prototype.start = function () {
   var self = this;
   var start = this.options.start;
   var end = this.options.end;
   var duration = self.options.duration;
+  var result = {};
+  var progress;
+  var time;
 
   this.options.timer = setInterval(function () {
-    var progress = Math.min((new Date() - time) / duration, 1);
-    var result = {};
+    time = time || new Date();
+    progress = Math.min((new Date() - time) / duration, 1);
 
     // Set the frame
-    forEach(self.options.start, function (value, key) {
+    forEach(start, function (value, key) {
       var delta = self.elastify(self.options.ease(self.options.delta, progress));
       var step = round(delta, 2);
       result[key] = start[key] + step * (end[key] - start[key]);
@@ -46,7 +49,7 @@ Animate.prototype.start = function (time) {
       if (self.options.iterations === self.iterations) {
         then(self);
       } else {
-        self.start(new Date());
+        self.start();
       }
     }
   }, self.options.fps);
