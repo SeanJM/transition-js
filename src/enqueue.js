@@ -1,6 +1,4 @@
 (function () {
-  var waiting = false;
-
   /*
     A function to ensure that the user has not chained two of the same method
     this is done because the last method call will overwrite every preceeding
@@ -34,12 +32,12 @@
     var queue = self.queue;
     var result;
 
-    if (!waiting && queue[0]) {
+    if (!self.waiting && queue[0]) {
       result = queue[0].method.apply(self, queue[0].arguments);
       if (result && typeof result.then === 'function') {
-        waiting = true;
+        self.waiting = true;
         result.then(function () {
-          waiting = false;
+          self.waiting = false;
           queue.shift();
           next(self);
         });
