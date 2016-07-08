@@ -32,18 +32,21 @@ Animate.prototype.elastify = function (p) {
     : p;
 };
 
-Animate.prototype.start = function (time) {
+Animate.prototype.start = function () {
   var self = this;
   var start = this.options.start;
   var end = this.options.end;
   var duration = self.options.duration;
+  var result = {};
+  var progress;
+  var time;
 
   this.options.timer = setInterval(function () {
-    var progress = Math.min((new Date() - time) / duration, 1);
-    var result = {};
+    time = time || new Date();
+    progress = Math.min((new Date() - time) / duration, 1);
 
     // Set the frame
-    forEach(self.options.start, function (value, key) {
+    forEach(start, function (value, key) {
       var delta = self.elastify(self.options.ease(self.options.delta, progress));
       var step = round(delta, 2);
       result[key] = start[key] + step * (end[key] - start[key]);
@@ -59,7 +62,7 @@ Animate.prototype.start = function (time) {
       if (self.options.iterations === self.iterations) {
         then(self);
       } else {
-        self.start(new Date());
+        self.start();
       }
     }
   }, self.options.fps);
@@ -103,8 +106,6 @@ function easeOut(transition, pos) {
 }
 
 (function () {
-  var waiting = false;
-
   /*
     A function to ensure that the user has not chained two of the same method
     this is done because the last method call will overwrite every preceeding
@@ -138,12 +139,12 @@ function easeOut(transition, pos) {
     var queue = self.queue;
     var result;
 
-    if (!waiting && queue[0]) {
+    if (!self.waiting && queue[0]) {
       result = queue[0].method.apply(self, queue[0].arguments);
       if (result && typeof result.then === 'function') {
-        waiting = true;
+        self.waiting = true;
         result.then(function () {
-          waiting = false;
+          self.waiting = false;
           queue.shift();
           next(self);
         });
@@ -170,7 +171,7 @@ window.transition = function transition(opt) {
 };
 
 function method_start(callback) {
-  return new Animate(this, callback).start(new Date());
+  return new Animate(this, callback).start();
 }
 
 function method_transition(options) {
@@ -200,7 +201,9 @@ function method_transition(options) {
 }
 
 function method_then(callback) {
-  callback();
+  if (typeof callback === 'function') {
+    callback();
+  }
 }
 
 function Transition(opt) {
