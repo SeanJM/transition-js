@@ -1,5 +1,5 @@
 function method_start(callback) {
-  return new Animate(this, callback).start(new Date());
+  return new Animate(this, callback).start();
 }
 
 function method_transition(options) {
@@ -29,5 +29,7 @@ function method_transition(options) {
 }
 
 function method_then(callback) {
-  callback();
+  if (typeof callback === 'function') {
+    callback();
+  }
 }
