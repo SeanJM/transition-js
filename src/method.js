@@ -22,6 +22,9 @@ function method_transition(options) {
     duration : options.duration
       || 300,
 
+    delay : options.delay
+      || 0,
+
     fps : options.fps
       ? 1000 / options.fps
       : 10,
