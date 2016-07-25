@@ -1,6 +1,6 @@
 function deltaBack(p) {
   // This code was adapted from MooTools.FX.Transitions.
-  var x = 10.618;
+  var x = 6;
   return Math.pow(p, 2) * ((x + 1) * p - x);
 }
 
