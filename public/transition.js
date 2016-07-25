@@ -36,43 +36,46 @@ Animate.prototype.start = function () {
   var self = this;
   var start = this.options.start;
   var end = this.options.end;
-  var duration = self.options.duration;
+  var duration = this.options.duration;
+  var delay = this.options.delay;
   var result = {};
   var progress;
   var time;
 
-  this.options.timer = setInterval(function () {
-    time = time || new Date();
-    progress = Math.min((new Date() - time) / duration, 1);
+  setTimeout(function () {
+    self.options.timer = setInterval(function () {
+      time = time || new Date();
+      progress = Math.min((new Date() - time) / duration, 1);
 
-    // Set the frame
-    forEach(start, function (value, key) {
-      var delta = self.elastify(self.options.ease(self.options.delta, progress));
-      var step = round(delta, 2);
-      result[key] = start[key] + step * (end[key] - start[key]);
-    });
+      // Set the frame
+      forEach(start, function (value, key) {
+        var delta = self.elastify(self.options.ease(self.options.delta, progress));
+        var step = round(delta, 2);
+        result[key] = start[key] + step * (end[key] - start[key]);
+      });
 
-    self.callback(result, progress);
+      self.callback(result, progress);
 
-    if (progress === 1) {
-      self.iterations++;
+      if (progress === 1) {
+        self.iterations++;
 
-      clearInterval(self.options.timer);
+        clearInterval(self.options.timer);
 
-      if (self.options.iterations === self.iterations) {
-        then(self);
-      } else {
-        self.start();
+        if (self.options.iterations === self.iterations) {
+          then(self);
+        } else {
+          self.start();
+        }
       }
-    }
-  }, self.options.fps);
+    }, self.options.fps);
+  }, delay);
 
   return this;
 };
 
 function deltaBack(p) {
   // This code was adapted from MooTools.FX.Transitions.
-  var x = 10.618;
+  var x = 6;
   return Math.pow(p, 2) * ((x + 1) * p - x);
 }
 
@@ -193,6 +196,9 @@ function method_transition(options) {
 
     duration : options.duration
       || 300,
+
+    delay : options.delay
+      || 0,
 
     fps : options.fps
       ? 1000 / options.fps
