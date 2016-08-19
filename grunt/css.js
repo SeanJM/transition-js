@@ -1,10 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 const m = require('match-file-utility');
-const isSite = require('./predicates/isSite');
-const isProduction = require('./predicates/isProduction');
+const config = JSON.parse(fs.readFileSync('package.json'));
 
-const importFile = isSite
+const importFile = config.isSite
   ? 'src/application/import.scss'
   : 'src/import.scss';
 
@@ -56,7 +55,7 @@ if (files.length) {
   }).join(''));
 }
 
-if (isProduction) {
+if (config.isProduction) {
   task.sass = {
     dist : {
       'bin/bundle.min.css' : importFile

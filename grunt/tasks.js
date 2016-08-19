@@ -1,16 +1,15 @@
+const fs = require('fs');
 const css = require('./css');
 const fonts = require('./fonts');
 const images = require('./images');
 const scripts = require('./scripts');
 const clean = require('./clean');
-const isProduction = require('./predicates/isProduction');
-const isSite = require('./predicates/isSite');
-
+const config = JSON.parse(fs.readFileSync('package.json'));
 
 let tasks = [];
 
 if (scripts.files.length) {
-  if (isProduction) {
+  if (config.isProduction) {
     tasks.push('uglify');
   } else {
     tasks.push('concat');
@@ -20,7 +19,7 @@ if (scripts.files.length) {
 if (css.files.length) {
   tasks.push('sass');
   tasks.push('autoprefixer');
-  if (isProduction) {
+  if (config.isProduction) {
     tasks.push('cssmin');
   }
 }
@@ -30,7 +29,7 @@ if (fonts.files.length) {
 }
 
 if (images.files.length) {
-  if (isProduction) {
+  if (config.isProduction) {
     tasks.push('imagemin');
   } else {
     tasks.push('copy:images');
@@ -41,7 +40,7 @@ tasks.push(
   'flatman'
 );
 
-if (!isProduction) {
+if (!config.isProduction) {
   tasks.push('watch');
 }
 

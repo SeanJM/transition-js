@@ -1,7 +1,7 @@
 const m = require('match-file-utility');
 const fs = require('fs');
 const scripts = require('./scripts');
-const isProduction = require('./predicates/isProduction');
+const config = JSON.parse(fs.readFileSync('package.json'));
 
 let files = m('src/flatman/', /\.js$/);
 
@@ -18,7 +18,7 @@ module.exports = {
         console.log('Cannot generate: \'' + file + '\', is it using \'module.exports\'?');
       }
 
-      if (isProduction) {
+      if (config.isProduction) {
         page
           .css('bin/bundle.min')
           .script('bin/bundle.min');

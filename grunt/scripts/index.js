@@ -1,13 +1,8 @@
 const fs = require('fs');
 const m = require('match-file-utility');
-const isSite = require('../predicates/isSite');
-const isProduction = require('../predicates/isProduction');
+const config = JSON.parse(fs.readFileSync('package.json'));
 
-module.exports = isSite
-  ? isProduction
-    ? require('./site/site.production')
-    : require('./site/site.development')
+module.exports = config.isSite
+  ? require('./site/site')
   // Is Plugin
-  : isProduction
-    ? require('./plugin/plugin.production')
-    : require('./plugin/plugin.development');
+  : require('./plugin/plugin');

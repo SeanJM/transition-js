@@ -1,12 +1,16 @@
 const fs = require('fs');
-const isSite = require('./predicates/isSite');
+const config = JSON.parse(fs.readFileSync('package.json'));
 
-var scriptFiles = isSite
-  ? require('./scripts/site/site.files')
-  : require('./scripts/plugin/plugin.files');
+const scriptFiles = config.isSite
+  ? require('./scripts/site/files')
+  : require('./scripts/plugin/files');
 
-for (var k in scriptFiles.dest) {
+const dest = config.isProduction
+  ? scriptFiles.dest.development
+  : scriptFiles.dest.production;
+
+for (var k in dest) {
   try {
-    fs.unlink(scriptFiles.dest[k]);
+    fs.unlink(dest[k]);
   } catch(e) {}
 }

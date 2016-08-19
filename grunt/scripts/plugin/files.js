@@ -1,4 +1,6 @@
+const fs = require('fs');
 const m = require('match-file-utility');
+const config = JSON.parse(fs.readFileSync('package.json'));
 
 function notGrunt(file) {
   return !/Gruntfile.js$/.test(file);
@@ -20,15 +22,22 @@ module.exports = {
   src : src,
 
   dest : {
-    constants : 'bin/constants.js',
-    vendor : 'bin/vendor.js',
-    custom : 'bin/custom.js',
-    common : 'bin/common.js',
-    components : 'bin/components.js',
-    containers : 'bin/containers.js',
-    collections : 'bin/collections.js',
-    main : 'bin/main.js',
-    init : 'bin/init.js'
+    development : {
+      constants : 'bin/constants.js',
+      vendor : 'bin/vendor.js',
+      custom : 'bin/custom.js',
+      common : 'bin/common.js',
+      components : 'bin/components.js',
+      containers : 'bin/containers.js',
+      collections : 'bin/collections.js',
+      main : 'bin/main.js',
+      init : 'bin/init.js'
+    },
+    production : {
+      bundle : config.scripts && config.scripts.bundle
+        ? config.scripts.bundle
+        : 'bundle.min.js'
+    }
   },
 
   list : [].concat(

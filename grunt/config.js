@@ -1,14 +1,15 @@
+const fs = require('fs');
 const flatman = require('./flatman');
 const scripts = require('./scripts');
 const css = require('./css');
 const images = require('./images');
 const fonts = require('./fonts');
 
-const isProduction = require('./predicates/isProduction');
+const config = JSON.parse(fs.readFileSync('package.json'));
 
 module.exports = {
   copy : {
-    fonts : isProduction
+    fonts : config.isProduction
       ? {}
       : {
         expand : true,
@@ -17,7 +18,7 @@ module.exports = {
         dest : 'bin/'
       },
 
-    images : isProduction
+    images : config.isProduction
       ? {}
       : {
         expand : true,
@@ -46,13 +47,13 @@ module.exports = {
         svgoPlugins : [{ removeViewBox : false }],
         use : [],
       },
-      files : isProduction
+      files : config.isProduction
         ? images.dest
         : {}
     }
   },
 
-  watch : isProduction
+  watch : config.isProduction
     ? {}
     : Object.assign({
     css : {

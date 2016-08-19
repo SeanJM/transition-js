@@ -1,4 +1,6 @@
+const fs = require('fs');
 const m = require('match-file-utility');
+const config = JSON.parse(fs.readFileSync('package.json'));
 
 function notGrunt(file) {
   return !/Gruntfile.js$/.test(file);
@@ -28,23 +30,30 @@ module.exports = {
   group : group,
 
   dest : {
-    shared_constants : 'bin/shared_constants.js',
-    shared_vendor : 'bin/shared_vendor.js',
-    shared_custom : 'bin/shared_custom.js',
-    shared_components : 'bin/shared_components.js',
-    shared_containers : 'bin/shared_containers.js',
-    shared_collections : 'bin/shared_collections.js',
-    shared_main : 'bin/shared_main.js',
-    shared_init : 'bin/init.js',
+    development : {
+      shared_constants : 'bin/shared_constants.js',
+      shared_vendor : 'bin/shared_vendor.js',
+      shared_custom : 'bin/shared_custom.js',
+      shared_components : 'bin/shared_components.js',
+      shared_containers : 'bin/shared_containers.js',
+      shared_collections : 'bin/shared_collections.js',
+      shared_main : 'bin/shared_main.js',
+      shared_init : 'bin/init.js',
 
-    constants : 'bin/constants.js',
-    vendor : 'bin/vendor.js',
-    components : 'bin/components.js',
-    containers : 'bin/containers.js',
-    custom : 'bin/custom.js',
-    collections : 'bin/collections.js',
-    main : 'bin/main.js',
-    init : 'bin/init.js'
+      constants : 'bin/constants.js',
+      vendor : 'bin/vendor.js',
+      components : 'bin/components.js',
+      containers : 'bin/containers.js',
+      custom : 'bin/custom.js',
+      collections : 'bin/collections.js',
+      main : 'bin/main.js',
+      init : 'bin/init.js'
+    },
+    production : {
+      bundle : config.scripts && config.scripts.bundle
+        ? config.scripts.bundle
+        : 'bundle.min.js'
+    }
   },
 
   list : [].concat(
