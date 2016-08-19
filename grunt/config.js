@@ -27,49 +27,17 @@ module.exports = {
       }
   },
 
-  sass : {
-    dist : {
-      files : { 'bin/bundle.css' : css.import },
-      options : isProduction
-        ? {}
-        : {
-          trace : true,
-          sourcemap : 'inline'
-        }
-    }
-  },
+  sass : css.task.sass,
 
   cssmin : {
-    options : {},
-    bundle : isProduction
-      ? { files : { 'bin/bundle.min.css' : 'bin/bundle.css' } }
-      : {}
+    files : { 'bin/bundle.min.css' : 'bin/bundle.css' }
   },
 
-  concat : isProduction
-    ? { empty : {} }
-    : scripts.task.concat,
+  concat : scripts.task.concat,
 
-  uglify : {
-    options : { mangle : true },
-    bundle : {
-      files : isProduction
-        ? scripts.task.uglify
-        : []
-    }
-  },
+  uglify : scripts.task.uglify,
 
-  autoprefixer : {
-    options : {
-      browsers : ['last 3 version'],
-      map : true
-    },
-
-    single_file : {
-      src : 'bin/bundle.css',
-      dest : 'bin/bundle.css'
-    },
-  },
+  autoprefixer : css.task.autoprefixer,
 
   imagemin : {
     static : {

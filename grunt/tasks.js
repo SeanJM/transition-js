@@ -36,8 +36,11 @@ if (images.files.length) {
 }
 
 tasks.push(
-  'flatman',
-  'watch'
+  'flatman'
 );
+
+if (!isProduction) {
+  tasks.push('watch');
+}
 
 module.exports = tasks;

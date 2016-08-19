@@ -4,10 +4,12 @@ module.exports = {
   files : files.list,
   task : {
     uglify : {
-      options : { mangle : true },
+      options : {
+        mangle : true
+      },
       files : {
         src : files.list,
-        dest : 'bundle.min.js'
+        dest : 'bin/bundle.min.js'
       }
     }
   }

@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const m = require('match-file-utility');
 const isSite = require('./predicates/isSite');
+const isProduction = require('./predicates/isProduction');
 
 const importFile = isSite
   ? 'src/application/import.scss'
@@ -16,6 +17,7 @@ const order = [
   'typeography.scss'
 ];
 
+let task = {};
 let files = [];
 
 function byType(a, b) {
@@ -54,9 +56,56 @@ if (files.length) {
   }).join(''));
 }
 
+if (isProduction) {
+  task.sass = {
+    dist : {
+      'bin/bundle.min.css' : importFile
+    },
+    options : {
+      sourcemap : false,
+    }
+  };
+
+  task.autoprefixer = {
+    options : {
+      browsers : ['last 3 version'],
+      map : false
+    },
+
+    single_file : {
+      src : 'bin/bundle.min.css',
+      dest : 'bin/bundle.min.css'
+    }
+  };
+} else {
+  task.sass = {
+    dist : {
+      'bin/bundle.css' : importFile
+    },
+    options : {
+      trace : true,
+      sourcemap : 'inline',
+      style : 'expanded'
+    }
+  };
+
+  task.autoprefixer = {
+    options : {
+      browsers : ['last 3 version'],
+      map : true
+    },
+
+    single_file : {
+      src : 'bin/bundle.css',
+      dest : 'bin/bundle.css'
+    }
+  };
+}
+
 module.exports = {
   files : files,
   import : importFile,
+  task : task,
   glob : [
     'src/application/styles/**/*.scss',
     'src/application/components/**/*.scss',
