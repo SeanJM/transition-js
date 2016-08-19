@@ -10,3 +10,13 @@ var FILTER_EASE = {
   'in-out' : easeInOut,
   'out' : easeOut,
 };
+
+var DEFAULT_PROPS = [
+  'delta',
+  'ease',
+  'elastic',
+  'iterations',
+  'duration',
+  'delay',
+  'fps'
+];

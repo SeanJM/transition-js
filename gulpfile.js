@@ -36,7 +36,7 @@ gulp.task('uglify', function () {
 });
 
 gulp.task('watch', function () {
-  var watcher = gulp.watch(scriptsGlob, ['default']); // watch the same files in our scripts task
+  var watcher = gulp.watch(scriptsGlob, ['watch']); // watch the same files in our scripts task
   watcher.on('change', function (event) {
     if (event.type === 'deleted') {                   // if a file is deleted, forget about it
       delete cached.caches.scripts[event.path];       // gulp-cached remove api
@@ -46,3 +46,4 @@ gulp.task('watch', function () {
 });
 
 gulp.task('default', [ 'concat', 'uglify', 'watch' ]);
+gulp.task('watch', [ 'concat', 'uglify', ]);

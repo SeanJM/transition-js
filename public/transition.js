@@ -11,6 +11,17 @@ var FILTER_EASE = {
   'in-out' : easeInOut,
   'out' : easeOut,
 };
+
+var DEFAULT_PROPS = [
+  'delta',
+  'ease',
+  'elastic',
+  'iterations',
+  'duration',
+  'delay',
+  'fps'
+];
+
 function Animate(self, callback) {
   this.method = {
     then : [],
@@ -25,11 +36,10 @@ Animate.prototype.then = function (callback) {
   this.method.then.push(callback);
 };
 
-Animate.prototype.elastify = function (p) {
-  var a = this.options.elastic * 5;
-  return this.options.elastic !== 0
-    ? Math.pow(2, 15 * --p) * Math.cos(a * p * Math.PI * 1 / 3)
-    : p;
+Animate.prototype.elastify = function (p, _p) {
+  var pos = 1 - Math.pow(_p, 5);
+  var y = 1 - Math.pow(2, 15 * --pos) * Math.cos(30 * pos * Math.PI * 1 / 2);
+  return mix(p, y, this.options.elastic);
 };
 
 Animate.prototype.start = function () {
@@ -49,7 +59,7 @@ Animate.prototype.start = function () {
 
       // Set the frame
       forEach(start, function (value, key) {
-        var delta = self.elastify(self.options.ease(self.options.delta, progress));
+        var delta = self.elastify(self.options.ease(self.options.delta, progress), progress);
         var step = round(delta, 2);
         result[key] = start[key] + step * (end[key] - start[key]);
       });
@@ -93,7 +103,7 @@ function deltaLinear(p) {
 }
 
 function deltaQuadratic(p) {
-  return Math.pow(p, 5);
+  return Math.pow(p, 6);
 }
 
 function easeInOut(transition, pos) {
@@ -178,9 +188,19 @@ function method_start(callback) {
 }
 
 function method_transition(options) {
+  var start = {};
+  var end = {};
+
+  for (var k in options) {
+    if (DEFAULT_PROPS.indexOf(k) === -1) {
+      start[k] = options[k][0];
+      end[k] = options[k][1];
+    }
+  }
+
   this.options = {
-    start : options.start,
-    end : options.end,
+    start : start,
+    end : end,
 
     delta : FILTER_DELTA[options.delta]
       || FILTER_DELTA.quadratic,
@@ -271,6 +291,10 @@ Transition.delta = {
 
 function forEach(iterable, func_callback) {
   for (var k in iterable) if (func_callback(iterable[k], k) === false) return false;
+}
+
+function mix(a, b, p) {
+	return a + ((b - a) * p);
 }
 
 function round(number, places) {

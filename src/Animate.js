@@ -12,11 +12,10 @@ Animate.prototype.then = function (callback) {
   this.method.then.push(callback);
 };
 
-Animate.prototype.elastify = function (p) {
-  var a = this.options.elastic * 5;
-  return this.options.elastic !== 0
-    ? Math.pow(2, 15 * --p) * Math.cos(a * p * Math.PI * 1 / 3)
-    : p;
+Animate.prototype.elastify = function (p, _p) {
+  var pos = 1 - Math.pow(_p, 5);
+  var y = 1 - Math.pow(2, 15 * --pos) * Math.cos(30 * pos * Math.PI * 1 / 2);
+  return mix(p, y, this.options.elastic);
 };
 
 Animate.prototype.start = function () {
@@ -36,7 +35,7 @@ Animate.prototype.start = function () {
 
       // Set the frame
       forEach(start, function (value, key) {
-        var delta = self.elastify(self.options.ease(self.options.delta, progress));
+        var delta = self.elastify(self.options.ease(self.options.delta, progress), progress);
         var step = round(delta, 2);
         result[key] = start[key] + step * (end[key] - start[key]);
       });

@@ -3,9 +3,19 @@ function method_start(callback) {
 }
 
 function method_transition(options) {
+  var start = {};
+  var end = {};
+
+  for (var k in options) {
+    if (DEFAULT_PROPS.indexOf(k) === -1) {
+      start[k] = options[k][0];
+      end[k] = options[k][1];
+    }
+  }
+
   this.options = {
-    start : options.start,
-    end : options.end,
+    start : start,
+    end : end,
 
     delta : FILTER_DELTA[options.delta]
       || FILTER_DELTA.quadratic,

@@ -5,6 +5,8 @@ A lightweight library for animations in JavaScript. The library provides methods
 ## Changes
 
 0.5.1 Refactored the code to be cleaner and use a `Promise` syntax
+0.5.2 Made any animation able to mix in elasticity
+0.5.3 Changed interface for setting start and end property values
 
 ## Basic Usage
 #### A function which will animate to elements 'style.opacity' property.
@@ -12,14 +14,9 @@ A lightweight library for animations in JavaScript. The library provides methods
 ```javascript
   var nodeA    = document.querySelector('#nodeA');
   var nodeB    = document.querySelector('#nodeB');
-  
+
   transition({
-    start : {
-      opacity : 0
-    },
-    end : {
-      opacity : 1
-    }
+    opacity : [0, 1]
   }).start(function (r) {
     nodeA.style.opacity = r.opacity;
     nodeB.style.opacity = r.opacity;
@@ -41,12 +38,7 @@ A lightweight library for animations in JavaScript. The library provides methods
   var nodeB    = document.querySelector('#nodeB');
 
   var settings = {
-    start : {
-      opacity : 0
-    },
-    end : {
-      opacity : 1
-    }
+    opacity : [0, 1]
   };
 
   transition(settings).start(function (r) {
@@ -64,12 +56,7 @@ A lightweight library for animations in JavaScript. The library provides methods
   var nodeB    = document.querySelector('#nodeB');
 
   var settings = {
-    start : {
-      opacity : 0
-    },
-    end : {
-      opacity : 1
-    }
+    opacity : [0, 1]
   };
 
   function onComplete() {
@@ -77,14 +64,14 @@ A lightweight library for animations in JavaScript. The library provides methods
   }
 
   transition(animationSettings)
-    .start(function (r) { 
+    .start(function (r) {
       nodeA.style.opacity = r.opacity;
     })
     .transition(animationSettings)
-      .start(function (r) { 
-        nodeB.style.opacity = r.opacity;
-      })
-      .then(onComplete);
+    .start(function (r) {
+      nodeB.style.opacity = r.opacity;
+    })
+    .then(onComplete);
 ```
 
 ## Supported settings for animation
@@ -124,7 +111,7 @@ Default value for `settings.delay` is `0` milliseconds.
 
 #### `settings.elastic`
 
-Default value for `settings.elastic` is `0`, there is no max value.
+Default value for `settings.elastic` is `0`, the max value is `1`.
 
 #### Example
 
@@ -135,12 +122,8 @@ Default value for `settings.elastic` is `0`, there is no max value.
     iterations : 3,
     delta      : 'bounce',
     ease       : 'out',
-    elastic    : 3,
-    start      : {
-      bottom : 200
-    },
-    end : {
-      bottom : 0
-    }
+    elastic    : 0.5,
+
+    bottom : [200, 0]
   };
 ```

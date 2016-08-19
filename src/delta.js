@@ -18,5 +18,5 @@ function deltaLinear(p) {
 }
 
 function deltaQuadratic(p) {
-  return Math.pow(p, 5);
+  return Math.pow(p, 6);
 }
