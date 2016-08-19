@@ -6,6 +6,19 @@ function method_transition(options) {
   var start = {};
   var end = {};
 
+  var FILTER_DELTA = {
+    back : deltaBack,
+    bounce : deltaBounce,
+    linear : deltaLinear,
+    quadratic : deltaQuadratic,
+  };
+
+  var FILTER_EASE = {
+    'in' : easeIn,
+    'in-out' : easeInOut,
+    'out' : easeOut,
+  };
+
   for (var k in options) {
     if (DEFAULT_PROPS.indexOf(k) === -1) {
       start[k] = options[k][0];

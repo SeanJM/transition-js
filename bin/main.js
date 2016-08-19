@@ -1,27 +1,3 @@
-(function () {
-var FILTER_DELTA = {
-  back : deltaBack,
-  bounce : deltaBounce,
-  linear : deltaLinear,
-  quadratic : deltaQuadratic,
-};
-
-var FILTER_EASE = {
-  'in' : easeIn,
-  'in-out' : easeInOut,
-  'out' : easeOut,
-};
-
-var DEFAULT_PROPS = [
-  'delta',
-  'ease',
-  'elastic',
-  'iterations',
-  'duration',
-  'delay',
-  'fps'
-];
-
 function Animate(self, callback) {
   this.method = {
     then : [],
@@ -37,8 +13,8 @@ Animate.prototype.then = function (callback) {
 };
 
 Animate.prototype.elastify = function (p, _p) {
-  var pos = 1 - Math.pow(_p, 5);
-  var y = 1 - Math.pow(2, 15 * --pos) * Math.cos(30 * pos * Math.PI * 1 / 2);
+  var pos = 1 - Math.pow(_p, 6);
+  var y = 1 - Math.pow(2, 15 * --pos) * Math.cos(50 * pos * Math.PI * 1 / 2);
   return mix(p, y, this.options.elastic);
 };
 
@@ -191,6 +167,19 @@ function method_transition(options) {
   var start = {};
   var end = {};
 
+  var FILTER_DELTA = {
+    back : deltaBack,
+    bounce : deltaBounce,
+    linear : deltaLinear,
+    quadratic : deltaQuadratic,
+  };
+
+  var FILTER_EASE = {
+    'in' : easeIn,
+    'in-out' : easeInOut,
+    'out' : easeOut,
+  };
+
   for (var k in options) {
     if (DEFAULT_PROPS.indexOf(k) === -1) {
       start[k] = options[k][0];
@@ -289,40 +278,3 @@ Transition.delta = {
   bounce : deltaBounce,
   back : deltaBack
 };
-
-function forEach(iterable, func_callback) {
-  for (var k in iterable) if (func_callback(iterable[k], k) === false) return false;
-}
-
-function mix(a, b, p) {
-	return a + ((b - a) * p);
-}
-
-function round(number, places) {
-  return Math.round(number * Math.pow(10, places)) / Math.pow(10, places);
-}
-
-function then(self) {
-  self.method.catch = [];
-  whileType(self.method.then);
-}
-
-// A function to loop through an array of functions, executing each function
-// then removing it from the array
-
-function whileType(method) {
-  var n = arguments.length;
-  var a = new Array(n);
-  var i = 1;
-
-  for (;i < n; i++) {
-    a.push(arguments[i]);
-  }
-
-  while (method && method.length) {
-    method[0].apply(a);
-    method.shift();
-  }
-}
-})();
-//# sourceMappingURL=../public/transition.js.map
