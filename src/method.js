@@ -26,8 +26,9 @@ function method_transition(options) {
     elastic : options.elastic
       || 0,
 
-    iterations : options.iterations
-      || 1,
+    iterations : typeof options.iterations === 'number'
+      ? options.iterations
+      : 1,
 
     duration : options.duration
       || 300,
