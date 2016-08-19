@@ -1,3 +1,4 @@
+const fs = require('fs');
 const files = require('./plugin.files');
 
 let task = {
@@ -120,5 +121,6 @@ if (files.src.init.length) {
 module.exports = {
   files : files.list,
   dest : 'bundle.js',
-  task : task
+  task : task,
+  clean : clean
 };

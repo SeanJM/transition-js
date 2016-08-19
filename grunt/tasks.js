@@ -2,8 +2,10 @@ const css = require('./css');
 const fonts = require('./fonts');
 const images = require('./images');
 const scripts = require('./scripts');
+const clean = require('./clean');
 const isProduction = require('./predicates/isProduction');
 const isSite = require('./predicates/isSite');
+
 
 let tasks = [];
 
