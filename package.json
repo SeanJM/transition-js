@@ -3,7 +3,8 @@
   "description": "A JavaScript factory for animating numeric based properties",
   "version": "0.5.0",
   "scripts": {
-    "test": "test.js"
+    "test": "test.js",
+    "bundle": "bin/transition.min.js"
   },
   "devDependencies": {},
   "dependencies": {

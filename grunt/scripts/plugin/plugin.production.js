@@ -1,4 +1,7 @@
+const fs = require('fs');
+const path = require('path');
 const files = require('./plugin.files');
+const config = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
 module.exports = {
   files : files.list,
@@ -9,7 +12,9 @@ module.exports = {
       },
       files : {
         src : files.list,
-        dest : 'bin/bundle.min.js'
+        dest : config.scripts && config.scripts.bundle
+         ? config.scripts.bundle
+         : 'bin/bundle.min.js'
       }
     }
   }
