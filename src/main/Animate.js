@@ -13,8 +13,8 @@ Animate.prototype.then = function (callback) {
 };
 
 Animate.prototype.elastify = function (p, _p) {
-  var pos = 1 - Math.pow(_p, 6);
-  var y = 1 - Math.pow(2, 15 * --pos) * Math.cos((0.03 * this.options.duration) * pos * Math.PI * 1 / (this.options.duration / 300));
+  var pos = 1 - Math.pow(_p, 8);
+  var y = 1 - Math.pow(2, 33 * --pos) * Math.cos(70 * pos * Math.PI * 1 / 5);
   return mix(p, y, this.options.elastic);
 };
 
