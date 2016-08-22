@@ -1,3 +1,4 @@
+const path = require('path');
 const fs = require('fs');
 const m = require('match-file-utility');
 const config = JSON.parse(fs.readFileSync('package.json'));
@@ -6,28 +7,49 @@ function notGrunt(file) {
   return !/Gruntfile.js$/.test(file);
 }
 
-let group = {
-  shared_constants : m('src/shared/scripts/vendor/', /\.js$/).filter(notGrunt),
-  shared_vendor : m('src/shared/scripts/vendor/', /\.js$/).filter(notGrunt),
-  shared_custom : m('src/shared/scripts/custom/', /\.js$/).filter(notGrunt),
-  shared_components : m('src/shared/scripts/components/', /\.js$/).filter(notGrunt),
-  shared_containers : m('src/shared/scripts/containers/', /\.js$/).filter(notGrunt),
-  shared_collections : m('src/shared/scripts/collections/', /\.js$/).filter(notGrunt),
-  shared_main : m('src/shared/scripts/main/', /\.js$/).filter(notGrunt),
+function smartSort(a, b) {
+  let ab = path.basename(a);
+  let bb = path.basename(b);
+
+  if (ab === 'init.js') {
+    return 1;
+  } else if (bb === 'init.js') {
+    return -1;
+  } else if (ab === 'constants.js') {
+    return -1;
+  } else if (bb === 'constants.js') {
+    return 1;
+  } else if (ab > bb) {
+    return 1;
+  } else {
+    return -1;
+  }
+
+  return 0;
+}
+
+let src = {
+  shared_constants : m('src/shared/scripts/vendor/', /\.js$/).filter(notGrunt).sort(smartSort),
+  shared_vendor : m('src/shared/scripts/vendor/', /\.js$/).filter(notGrunt).sort(smartSort),
+  shared_custom : m('src/shared/scripts/custom/', /\.js$/).filter(notGrunt).sort(smartSort),
+  shared_components : m('src/shared/scripts/components/', /\.js$/).filter(notGrunt).sort(smartSort),
+  shared_containers : m('src/shared/scripts/containers/', /\.js$/).filter(notGrunt).sort(smartSort),
+  shared_collections : m('src/shared/scripts/collections/', /\.js$/).filter(notGrunt).sort(smartSort),
+  shared_main : m('src/shared/scripts/main/', /\.js$/).filter(notGrunt).sort(smartSort),
   shared_init : 'src/shared/scripts/init.js',
 
-  constants : m('src/application/scripts/constants/', /\.js$/).filter(notGrunt),
-  vendor : m('src/application/scripts/vendor/', /\.js$/).filter(notGrunt),
-  components : m('src/application/components/', /\.js$/).filter(notGrunt),
-  containers : m('src/application/containers/', /\.js$/).filter(notGrunt),
-  custom : m('src/application/scripts/custom/', /\.js$/).filter(notGrunt),
-  collections : m('src/application/collections/', /\.js$/).filter(notGrunt),
-  main : m('src/application/main/', /\.js$/).filter(notGrunt),
+  constants : m('src/application/scripts/constants/', /\.js$/).filter(notGrunt).sort(smartSort),
+  vendor : m('src/application/scripts/vendor/', /\.js$/).filter(notGrunt).sort(smartSort),
+  components : m('src/application/components/', /\.js$/).filter(notGrunt).sort(smartSort),
+  containers : m('src/application/containers/', /\.js$/).filter(notGrunt).sort(smartSort),
+  custom : m('src/application/scripts/custom/', /\.js$/).filter(notGrunt).sort(smartSort),
+  collections : m('src/application/collections/', /\.js$/).filter(notGrunt).sort(smartSort),
+  main : m('src/application/main/', /\.js$/).filter(notGrunt).sort(smartSort),
   init : 'src/application/scripts/init.js'
 };
 
 module.exports = {
-  group : group,
+  src : src,
 
   dest : {
     development : {
@@ -57,22 +79,22 @@ module.exports = {
   },
 
   list : [].concat(
-    group.shared_constants,
-    group.shared_vendor,
-    group.shared_custom,
-    group.shared_components,
-    group.shared_containers,
-    group.shared_collections,
-    group.shared_main,
-    group.shared_init,
+    src.shared_constants,
+    src.shared_vendor,
+    src.shared_custom,
+    src.shared_components,
+    src.shared_containers,
+    src.shared_collections,
+    src.shared_main,
+    src.shared_init,
 
-    group.constants,
-    group.vendor,
-    group.components,
-    group.containers,
-    group.custom,
-    group.collections,
-    group.main,
-    group.init
+    src.constants,
+    src.vendor,
+    src.components,
+    src.containers,
+    src.custom,
+    src.collections,
+    src.main,
+    src.init
   )
 };

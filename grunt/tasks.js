@@ -8,7 +8,7 @@ const config = JSON.parse(fs.readFileSync('package.json'));
 
 let tasks = [];
 
-if (scripts.files.length) {
+if (scripts.list.length) {
   if (config.isProduction) {
     tasks.push('uglify');
   } else {
@@ -17,8 +17,7 @@ if (scripts.files.length) {
 }
 
 if (css.files.length) {
-  tasks.push('sass');
-  tasks.push('autoprefixer');
+  tasks.push('sass', 'autoprefixer');
   if (config.isProduction) {
     tasks.push('cssmin');
   }

@@ -58,7 +58,9 @@ if (files.length) {
 if (config.isProduction) {
   task.sass = {
     dist : {
-      'bin/bundle.min.css' : importFile
+      files : {
+        'bin/bundle.css' : importFile
+      }
     },
     options : {
       sourcemap : false,
@@ -72,14 +74,16 @@ if (config.isProduction) {
     },
 
     single_file : {
-      src : 'bin/bundle.min.css',
-      dest : 'bin/bundle.min.css'
+      src : 'bin/bundle.css',
+      dest : 'bin/bundle.css'
     }
   };
 } else {
   task.sass = {
     dist : {
-      'bin/bundle.css' : importFile
+      files : {
+        'bin/bundle.css' : importFile
+      }
     },
     options : {
       trace : true,

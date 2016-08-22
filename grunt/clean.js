@@ -5,12 +5,20 @@ const scriptFiles = config.isSite
   ? require('./scripts/site/files')
   : require('./scripts/plugin/files');
 
+function exists(a) {
+  let o = {};
+  for (let k in a) {
+    try {
+      fs.statSync(a);
+      o[k] = a;
+    } catch (e) {}
+  }
+}
+
 const dest = config.isProduction
-  ? scriptFiles.dest.development
-  : scriptFiles.dest.production;
+  ? exists(scriptFiles.dest.development)
+  : exists(scriptFiles.dest.production);
 
 for (var k in dest) {
-  try {
-    fs.unlink(dest[k]);
-  } catch(e) {}
+  fs.unlink(dest[k]);
 }

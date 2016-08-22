@@ -31,7 +31,7 @@ module.exports = {
   sass : css.task.sass,
 
   cssmin : {
-    files : { 'bin/bundle.min.css' : 'bin/bundle.css' }
+    files : { 'bin/bundle.css' : 'bin/bundle.css' }
   },
 
   concat : scripts.task.concat,
@@ -74,12 +74,6 @@ module.exports = {
         reload : true
       },
       tasks: ['default']
-    },
-
-    dotenv : {
-      files : ['.env'],
-      options : { reload : true },
-      tasks : ['default']
     }
   }, scripts.task.watch)
 };
