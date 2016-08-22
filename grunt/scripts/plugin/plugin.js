@@ -33,12 +33,12 @@ for (var k in files.src) {
 
     task.watch[k] = {
       files : files.src[k],
-      task : [ 'concat:' + k ]
+      tasks : [ 'concat:' + k ]
     };
   }
 }
 
 module.exports = {
-  files : files.list,
+  list : files.list,
   task : task
 };
