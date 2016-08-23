@@ -2,11 +2,15 @@
   "name": "transition",
   "description": "A JavaScript factory for animating numeric based properties",
   "version": "0.5.0",
-  "isProduction": true,
-  "isSite": false,
+  "gruntBuild": {
+    "isProduction" : true,
+    "isSite" : false,
+    "alwaysBundle" : true,
+    "useClosure" : true,
+    "bundle": "transition"
+  },
   "scripts": {
-    "test": "test.js",
-    "bundle": "bin/transition.min.js"
+    "test": "test.js"
   },
   "devDependencies": {},
   "dependencies": {
