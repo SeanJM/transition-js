@@ -17,7 +17,7 @@ const order = [
 ];
 
 let task = {};
-let files = [];
+let list = [];
 
 function byType(a, b) {
   let abase = path.basename(a);
@@ -38,21 +38,23 @@ function byType(a, b) {
   return 0;
 }
 
-files = files.concat(m('src/application/fonts/', /\.scss$/).sort(byType));
-files = files.concat(m('src/application/styles/vendor', /\.scss$/).sort(byType));
-files = files.concat(m('src/application/styles/constants', /\.scss$/).sort(byType));
-files = files.concat(m('src/application/styles/functions', /\.scss$/).sort(byType));
-files = files.concat(m('src/application/styles/mixins', /\.scss$/).sort(byType));
-files = files.concat(m('src/application/styles/custom', /\.scss$/).sort(byType));
-files = files.concat(m('src/application/components/', /\.scss$/).sort(byType));
-files = files.concat(m('src/application/containers/', /\.scss$/).sort(byType));
-files = files.concat(m('src/application/collections/', /\.scss$/).sort(byType));
+list = list.concat(m('src/application/fonts/', /\.scss$/).sort(byType));
+list = list.concat(m('src/application/styles/vendor', /\.scss$/).sort(byType));
+list = list.concat(m('src/application/styles/constants', /\.scss$/).sort(byType));
+list = list.concat(m('src/application/styles/functions', /\.scss$/).sort(byType));
+list = list.concat(m('src/application/styles/mixins', /\.scss$/).sort(byType));
+list = list.concat(m('src/application/styles/custom', /\.scss$/).sort(byType));
+list = list.concat(m('src/application/components/', /\.scss$/).sort(byType));
+list = list.concat(m('src/application/containers/', /\.scss$/).sort(byType));
+list = list.concat(m('src/application/collections/', /\.scss$/).sort(byType));
 
-if (files.length) {
-  fs.writeFile(importFile, files.map(function (f) {
+if (list.length) {
+  fs.writeFile(importFile, list.map(function (f) {
     let s = f.split(path.sep).slice(2);
     return `@import "${s.join(path.sep)}";\n`;
   }).join(''));
+} else if (m('src/application/styles', /\.scss$/).length) {
+  console.log('Incorrect folder structure. Styles must go into folders like\n - \'styles/vendor\'\n- \'styles/custom\'\n- \'styles/constants\'');
 }
 
 if (config.isProduction) {
@@ -106,7 +108,7 @@ if (config.isProduction) {
 }
 
 module.exports = {
-  files : files,
+  list : list,
   import : importFile,
   task : task,
   glob : [

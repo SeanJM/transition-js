@@ -11,7 +11,8 @@ let task = {
 
 task.uglify = {
   options : {
-    mangle : true
+    mangle : true,
+    wrap : true
   },
   files : {
     src : files.list,
@@ -24,7 +25,11 @@ task.uglify = {
 for (var k in files.src) {
   if (files.src[k].length) {
     task.concat[k] = {
-      options : { sourceMap : true },
+      options : {
+        sourceMap : true,
+        header : '(function () {\n',
+        footer : '\n}());'
+      },
       src : files.src[k],
       dest : dest[k]
     };

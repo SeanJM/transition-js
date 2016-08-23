@@ -18,28 +18,24 @@ let src = {
   init : m('src/init/', /\.js$/).filter(notGrunt),
 };
 
+let dest = {
+  development : {},
+  production : {
+    bundle : config.scripts && config.scripts.bundle
+      ? config.scripts.bundle
+      : 'bin/bundle.min.js'
+  }
+};
+
+for (var k in src) {
+  if (src[k].length) {
+    dest.development[k] = 'bin/' + k + '.js';
+  }
+}
+
 module.exports = {
   src : src,
-
-  dest : {
-    development : {
-      constants : 'bin/constants.js',
-      vendor : 'bin/vendor.js',
-      custom : 'bin/custom.js',
-      common : 'bin/common.js',
-      components : 'bin/components.js',
-      containers : 'bin/containers.js',
-      collections : 'bin/collections.js',
-      main : 'bin/main.js',
-      init : 'bin/init.js'
-    },
-    production : {
-      bundle : config.scripts && config.scripts.bundle
-        ? config.scripts.bundle
-        : 'bundle.min.js'
-    }
-  },
-
+  dest : dest,
   list : [].concat(
     src.constants,
     src.vendor,

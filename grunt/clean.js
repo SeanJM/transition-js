@@ -9,10 +9,11 @@ function exists(a) {
   let o = {};
   for (let k in a) {
     try {
-      fs.statSync(a);
-      o[k] = a;
+      fs.statSync(a[k]);
+      o[k] = a[k];
     } catch (e) {}
   }
+  return o;
 }
 
 const dest = config.isProduction

@@ -16,7 +16,7 @@ if (scripts.list.length) {
   }
 }
 
-if (css.files.length) {
+if (css.list.length) {
   tasks.push('sass', 'autoprefixer');
   if (config.isProduction) {
     tasks.push('cssmin');

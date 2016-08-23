@@ -20,8 +20,8 @@ module.exports = {
 
       if (config.isProduction) {
         page
-          .css('bin/bundle.min')
-          .script('bin/bundle.min');
+          .css('bin/bundle')
+          .script('bin/bundle');
       } else {
         page.css('bin/bundle');
         for (var k in scripts.dest) {
