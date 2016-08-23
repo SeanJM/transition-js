@@ -5,30 +5,33 @@ const dest = files.dest[ config.gruntBuild.isProduction ? 'production' : 'develo
 
 let task = {
   concat : {},
-  uglify : {},
   watch : {}
 };
 
 task.uglify = {
   options : {
     mangle : true,
-    wrap : config.gruntBuild.useClosure ? true : false
+    wrap : config.gruntBuild.useClosure
+      ? true
+      : false
   },
   files : {
     src : files.list,
-    dest : config.scripts && config.scripts.bundle
-     ? config.scripts.bundle
+    dest : config.gruntBuild.bundle
+     ? 'bin/' + config.gruntBuild.bundle + '.min.js'
      : 'bin/bundle.min.js'
   }
 };
 
-if (config.alwaysBundle) {
+if (config.gruntBuild.alwaysBundle) {
   task.concat.scripts = {
     options : {
       sourceMap : true,
     },
     src : files.list,
-    dest : 'bin/bundle.js'
+    dest : config.gruntBuild.bundle
+      ? 'bin/' + config.gruntBuild.bundle + '.js'
+      : 'bin/bundle.js'
   };
 
   task.watch.scripts = {

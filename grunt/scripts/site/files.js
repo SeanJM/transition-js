@@ -30,8 +30,8 @@ let src = {
 let dest = {
   development : {},
   production : {
-    bundle : config.scripts && config.scripts.bundle
-      ? config.scripts.bundle
+    bundle : config.scripts && config.gruntBuild.bundle
+      ? config.gruntBuild.bundle
       : 'bin/bundle.js'
   }
 };

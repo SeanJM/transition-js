@@ -11,12 +11,14 @@ let task = {
 task.uglify = {
   options : {
     mangle : true,
-    wrap : config.gruntBuild.useClosure ? true : false
+    wrap : config.gruntBuild.useClosure
+      ? true
+      : false
   },
   files : {
     src : files.list,
-    dest : config.scripts && config.scripts.bundle
-     ? config.scripts.bundle
+    dest : config.gruntBuild.bundle
+     ? 'bin/' + config.gruntBuild.bundle + '.min.js'
      : 'bin/bundle.min.js'
   }
 };
@@ -27,7 +29,9 @@ if (config.gruntBuild.alwaysBundle) {
       sourceMap : true,
     },
     src : files.list,
-    dest : 'bin/bundle.js'
+    dest : config.gruntBuild.bundle
+      ? 'bin/' + config.gruntBuild.bundle + '.js'
+      : 'bin/bundle.js'
   };
 
   task.watch.scripts = {
