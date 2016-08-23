@@ -2,8 +2,8 @@ const fs = require('fs');
 const config = JSON.parse(fs.readFileSync('package.json'));
 
 const scriptFiles = config.gruntBuild.isSite
-  ? require('./scripts/site/files')
-  : require('./scripts/plugin/files');
+  ? require('./scripts/site_files')
+  : require('./scripts/plugin_files');
 
 function exists(a) {
   let o = {};
