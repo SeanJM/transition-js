@@ -1,21 +1,17 @@
 const fs = require('fs');
 const files = require('./files');
 const config = JSON.parse(fs.readFileSync('package.json'));
-const dest = files.dest[ config.isProduction ? 'production' : 'development' ];
+const dest = files.dest[ config.gruntBuild.isProduction ? 'production' : 'development' ];
 
 let task = {
-  concat : {
-    options : {
-      sourceMap : false
-    }
-  },
+  concat : {},
   watch : {}
 };
 
 task.uglify = {
   options : {
     mangle : true,
-    wrap : true
+    wrap : config.gruntBuild.useClosure ? true : false
   },
   files : {
     src : files.list,
@@ -25,22 +21,46 @@ task.uglify = {
   }
 };
 
-for (var k in files.src) {
-  if (files.src[k].length) {
-    task.concat[k] = {
-      options : {
-        sourceMap : true,
-        header : '(function () {\n',
-        footer : '\n}());'
-      },
-      src : files.src[k],
-      dest : dest[k]
-    };
+if (config.gruntBuild.alwaysBundle) {
+  task.concat.scripts = {
+    options : {
+      sourceMap : true,
+    },
+    src : files.list,
+    dest : 'bin/bundle.js'
+  };
 
-    task.watch[k] = {
-      files : files.src[k],
-      tasks : [ 'concat:' + k ]
-    };
+  task.watch.scripts = {
+    files : files.list,
+    tasks : [ 'concat:scripts' ]
+  };
+
+  if (config.gruntBuild.useClosure) {
+    task.concat.scripts.options.banner = '(function () {\n';
+    task.concat.scripts.options.banner = '\n}());';
+  }
+
+} else {
+  for (var k in files.src) {
+    if (files.src[k].length) {
+      task.concat[k] = {
+        options : {
+          sourceMap : true,
+        },
+        src : files.src[k],
+        dest : dest[k]
+      };
+
+      task.watch[k] = {
+        files : files.src[k],
+        tasks : [ 'concat:' + k ]
+      };
+
+      if (config.gruntBuild.useClosure) {
+        task.concat[k].options.banner = '(function () {\n';
+        task.concat[k].options.banner = '\n}());';
+      }
+    }
   }
 }
 

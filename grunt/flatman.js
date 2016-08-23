@@ -18,7 +18,7 @@ module.exports = {
         console.log('Cannot generate: \'' + file + '\', is it using \'module.exports\'?');
       }
 
-      if (config.isProduction) {
+      if (config.gruntBuild.isProduction) {
         page
           .css('bin/bundle')
           .script('bin/bundle');

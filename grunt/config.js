@@ -9,7 +9,7 @@ const config = JSON.parse(fs.readFileSync('package.json'));
 
 module.exports = {
   copy : {
-    fonts : config.isProduction
+    fonts : config.gruntBuild.isProduction
       ? {}
       : {
         expand : true,
@@ -18,7 +18,7 @@ module.exports = {
         dest : 'bin/'
       },
 
-    images : config.isProduction
+    images : config.gruntBuild.isProduction
       ? {}
       : {
         expand : true,
@@ -47,13 +47,13 @@ module.exports = {
         svgoPlugins : [{ removeViewBox : false }],
         use : [],
       },
-      files : config.isProduction
+      files : config.gruntBuild.isProduction
         ? images.dest
         : {}
     }
   },
 
-  watch : config.isProduction
+  watch : config.gruntBuild.isProduction
     ? {}
     : Object.assign({
     css : {

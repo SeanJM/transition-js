@@ -9,7 +9,7 @@ const config = JSON.parse(fs.readFileSync('package.json'));
 let tasks = [];
 
 if (scripts.list.length) {
-  if (config.isProduction) {
+  if (config.gruntBuild.isProduction) {
     tasks.push('uglify');
   } else {
     tasks.push('concat');
@@ -18,7 +18,7 @@ if (scripts.list.length) {
 
 if (css.list.length) {
   tasks.push('sass', 'autoprefixer');
-  if (config.isProduction) {
+  if (config.gruntBuild.isProduction) {
     tasks.push('cssmin');
   }
 }
@@ -28,7 +28,7 @@ if (fonts.files.length) {
 }
 
 if (images.files.length) {
-  if (config.isProduction) {
+  if (config.gruntBuild.isProduction) {
     tasks.push('imagemin');
   } else {
     tasks.push('copy:images');
@@ -39,7 +39,7 @@ tasks.push(
   'flatman'
 );
 
-if (!config.isProduction) {
+if (!config.gruntBuild.isProduction) {
   tasks.push('watch');
 }
 

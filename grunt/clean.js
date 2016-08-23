@@ -1,7 +1,7 @@
 const fs = require('fs');
 const config = JSON.parse(fs.readFileSync('package.json'));
 
-const scriptFiles = config.isSite
+const scriptFiles = config.gruntBuild.isSite
   ? require('./scripts/site/files')
   : require('./scripts/plugin/files');
 
@@ -16,7 +16,7 @@ function exists(a) {
   return o;
 }
 
-const dest = config.isProduction
+const dest = config.gruntBuild.isProduction
   ? exists(scriptFiles.dest.development)
   : exists(scriptFiles.dest.production);
 

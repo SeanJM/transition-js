@@ -3,7 +3,7 @@ const path = require('path');
 const m = require('match-file-utility');
 const config = JSON.parse(fs.readFileSync('package.json'));
 
-const importFile = config.isSite
+const importFile = config.gruntBuild.isSite
   ? 'src/application/import.scss'
   : 'src/import.scss';
 
@@ -57,7 +57,7 @@ if (list.length) {
   console.log('Incorrect folder structure. Styles must go into folders like\n - \'styles/vendor\'\n- \'styles/custom\'\n- \'styles/constants\'');
 }
 
-if (config.isProduction) {
+if (config.gruntBuild.isProduction) {
   task.sass = {
     dist : {
       files : {
