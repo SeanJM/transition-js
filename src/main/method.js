@@ -36,8 +36,7 @@ function method_transition(options) {
     ease : FILTER_EASE[options.ease]
       || FILTER_EASE['in-out'],
 
-    elastic : options.elastic
-      || 0,
+    elastic : options.elastic ? Math.min(options.elastic, 1) : 0,
 
     iterations : typeof options.iterations === 'number'
       ? options.iterations
@@ -51,7 +50,7 @@ function method_transition(options) {
 
     fps : options.fps
       ? 1000 / options.fps
-      : 10,
+      : 5,
   };
 }
 
