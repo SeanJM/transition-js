@@ -37,7 +37,7 @@ if (config.gruntBuild.alwaysBundle) {
 
   if (config.gruntBuild.useClosure) {
     task.concat.scripts.options.banner = '(function () {\n';
-    task.concat.scripts.options.banner = '\n}());';
+    task.concat.scripts.options.footer = '\n}());';
   }
 
 } else {
@@ -58,7 +58,7 @@ if (config.gruntBuild.alwaysBundle) {
 
       if (config.gruntBuild.useClosure) {
         task.concat[k].options.banner = '(function () {\n';
-        task.concat[k].options.banner = '\n}());';
+        task.concat[k].options.footer = '\n}());';
       }
     }
   }
